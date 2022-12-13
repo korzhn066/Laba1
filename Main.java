@@ -26,8 +26,29 @@ public class Main {
         appleAmount++;
       }
       else if (parts[0].equals("Dessert")) {
-        _breakfast.add(new Dessert(parts[1], parts[2]));
         dessertAmount++;
+
+        Class myClass;
+        try {
+          myClass = Class.forName("Dessert");
+        } catch (ClassNotFoundException e) {
+          throw new RuntimeException(e);
+        }
+        Constructor constructor;
+        try {
+          constructor = myClass.getConstructor(String.class, String.class);
+        } catch (NoSuchMethodException e) {
+          throw new RuntimeException(e);
+        }
+        try {
+          _breakfast.add((Food)constructor.newInstance(parts[1], parts[2]));
+        } catch (InstantiationException e) {
+          throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+          throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+          throw new RuntimeException(e);
+        }
       }else {
         throw new ClassNotFoundException();
       }
